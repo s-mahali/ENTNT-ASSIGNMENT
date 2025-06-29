@@ -14,7 +14,7 @@ const App = () => {
 
     },
     {
-      path: "/signin",
+      path: "/login",
       element: <LoginPage/>
       
     },
