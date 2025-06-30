@@ -95,7 +95,7 @@ const Login = () => {
 
     setIsLoading(true);
     try {
-      // Simulate API delay
+      // simulate api delay
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       const user = HARDCODED_USERS.find(

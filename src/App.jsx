@@ -3,12 +3,22 @@ import InitialLanding from './components/InitialLanding'
 import {createBrowserRouter, RouterProvider} from "react-router-dom"
 import SignupPage from './page/SignupPage'
 import LoginPage from './page/LoginPage'
+import ManagePatientPage from './page/ManagePatientPage'
+import MainLayout from './page/MainLayout'
 const App = () => {
   const browserRouter = createBrowserRouter([
     {
       path:"/",
-      element:<InitialLanding/>,
+      element:<MainLayout/>,
       children: [
+          {
+            path: "/",
+            element: <InitialLanding/>,
+          },
+          {
+            path: "/patient",
+            element: <ManagePatientPage/>,
+          },
 
       ]
 

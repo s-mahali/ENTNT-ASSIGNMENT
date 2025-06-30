@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authSlice from "../slicers/authSlice";
+import patientSlice from "../slicers/patientSlice";
 
 import {
 
@@ -23,6 +24,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authSlice,
+  patients: patientSlice,
   
 })
 
