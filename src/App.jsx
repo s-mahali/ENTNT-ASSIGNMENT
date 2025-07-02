@@ -6,6 +6,7 @@ import LoginPage from './page/LoginPage'
 import ManagePatientPage from './page/ManagePatientPage'
 import MainLayout from './page/MainLayout'
 import AppointmentPage from './page/AppointmentPage'
+import AdminDashboardPage from './page/AdminDashboardPage'
 const App = () => {
   const browserRouter = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const App = () => {
             path: "/incident",
             element: <AppointmentPage/>,
           },
+          {
+            path: "/dashboard",
+            element: <AdminDashboardPage/>
+          }
 
 
       ]
