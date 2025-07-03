@@ -1,10 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import LeftNavbar from '../components/LeftNavbar'
 
 const MainLayout = () => {
   return (
     <div>
-      <Outlet/>
+      <LeftNavbar/>
+      <div className='ml-16'>
+        <Outlet/>
+      </div>
     </div>
   )
 }

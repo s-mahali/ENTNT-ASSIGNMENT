@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Save, Loader2, X } from "lucide-react";
 import toast from "react-hot-toast";
 
-const PreAppointment = () => {
+const PreAppointment = ({ open }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const imgRef = useRef(null);
@@ -193,282 +193,294 @@ const PreAppointment = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex flex-col items-center justify-center">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-8"
-      >
-        <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
-          Schedule New Incident
-        </h1>
-      </motion.div>
-      <button onClick={() => setIsPostIncident(true)}>complete</button>
-      <motion.div className="lg:w-1/2 md:w-full sm:w-full bg-slate-800/50 p-6 rounded-lg">
-        <form
-          className="space-y-6"
-          onSubmit={
-            isPostIncident
-              ? handleSavePostAppointment
-              : handleSavePreAppointment
-          }
+    open && (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex flex-col items-center justify-center flex-1">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-8"
         >
-          <div className="space-y-4">
-            {!isPostIncident && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-slate-200 mb-2">
-                    Title
-                  </label>
-                  <input
-                    type="text"
-                    name="title"
-                    value={preAppointmentForm.title}
-                    onChange={handleInputChange}
-                    placeholder="Root Canal Treatment, Dental Cleaning, Emergency Visit etc"
-                    className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
-                      errors.title ? "border-red-500" : "border-slate-600"
-                    }`}
-                  />
-                  {errors.title && (
-                    <p className="text-red-400 text-sm mt-1">{errors.title}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-200 mb-2">
-                    Description
-                  </label>
-                  <textarea
-                    name="description"
-                    rows={2}
-                    value={preAppointmentForm.description}
-                    onChange={handleInputChange}
-                    placeholder="Detailed Reason for Visit"
-                    className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                      errors.description ? "border-red-500" : "border-slate-600"
-                    }`}
-                  />
-                  {errors.description && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {errors.description}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-200 mb-2">
-                    Comments
-                  </label>
-                  <textarea
-                    name="comments"
-                    value={preAppointmentForm.comments}
-                    onChange={handleInputChange}
-                    rows={2}
-                    placeholder="Doctor's notes, patient concerns, prep instructions etc"
-                    className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none ${
-                      errors.comments ? "border-red-500" : "border-slate-600"
-                    }`}
-                  />
-                  {errors.comments && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {errors.comments}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-200 mb-2">
-                    Appointment DateTime
-                  </label>
-                  <input
-                    type="Date"
-                    name="appointmentDate"
-                    value={preAppointmentForm.appointmentDate}
-                    onChange={handleInputChange}
-                    placeholder="When the appointment is scheduled"
-                    className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                      errors.appointmentDate
-                        ? "border-red-500"
-                        : "border-slate-600"
-                    }`}
-                  />
-                  {errors.appointmentDate && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {errors.appointmentDate}
-                    </p>
-                  )}
-                </div>
-              </>
-            )}
-            {/* post appointment form data */}
-            {isPostIncident && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-slate-200 mb-2">
-                    Cost
-                  </label>
-                  <input
-                    type="number"
-                    name="cost"
-                    value={preAppointmentForm.cost}
-                    onChange={handleInputChange}
-                    placeholder="Root Canal Treatment, Dental Cleaning, Emergency Visit etc"
-                    className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
-                      errors.cost ? "border-red-500" : "border-slate-600"
-                    }`}
-                  />
-                  {errors.cost && (
-                    <p className="text-red-400 text-sm mt-1">{errors.cost}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-200 mb-2">
-                    Treatment
-                  </label>
-                  <input
-                    type="text"
-                    name="treatment"
-                    value={preAppointmentForm.treatment}
-                    onChange={handleInputChange}
-                    placeholder="Root Canal Treatment, Dental Cleaning, Emergency Visit etc"
-                    className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
-                      errors.treatment ? "border-red-500" : "border-slate-600"
-                    }`}
-                  />
-                  {errors.treatment && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {errors.treatment}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-slate-200 mb-2">
-                    Next Date
-                  </label>
-                  <input
-                    type="Date"
-                    name="nextDate"
-                    value={preAppointmentForm.nextDate}
-                    onChange={handleInputChange}
-                    placeholder=""
-                    className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
-                      errors.nextDate ? "border-red-500" : "border-slate-600"
-                    }`}
-                  />
-                  {errors.nextDate && (
-                    <p className="text-red-400 text-sm mt-1">
-                      {errors.nextDate}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-200 mb-2">
-                    Files
-                  </label>
-                  <input
-                    type="file"
-                    name="files"
-                    onChange={handleFileChange}
-                    ref={imgRef}
-                    accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt,.csv"
-                    placeholder="Upload files"
-                    className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
-                      errors.files ? "border-red-500" : "border-slate-600"
-                    }`}
-                  />
-                  {errors.files && (
-                    <p className="text-red-400 text-sm mt-1">{errors.files}</p>
-                  )}
-                </div>
-                {preAppointmentForm.files.length > 0 && (
-                  <div className="mt-4 bg-slate-700/20 p-3 rounded-lg">
-                    <p className="text-sm font-medium text-slate-200 mb-3">
-                      Uploaded files ({preAppointmentForm.files.length})
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {preAppointmentForm.files.map((file, index) => (
-                        <div
-                          key={index}
-                          className="bg-slate-700/40 rounded-lg overflow-hidden flex flex-col"
-                        >
-                          <div className="flex items-center justify-between p-2 border-b border-slate-600">
-                            <span className="text-sm text-slate-300 truncate max-w-[80%]">
-                              {file.name}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setPreAppointmentForm((prev) => ({
-                                  ...prev,
-                                  files: prev.files.filter(
-                                    (_, i) => i !== index
-                                  ),
-                                }));
-                              }}
-                              className="p-1 rounded-full hover:bg-slate-600/50"
-                              aria-label="Remove file"
-                            >
-                              <X size={18} className="text-red-400" />
-                            </button>
-                          </div>
-                          {file.url.startsWith("data:image") ? (
-                            <div className="relative pt-[56.25%]">
-                              <img
-                                src={file.url}
-                                alt={"image-preview"} 
-                                className="absolute top-0 left-0 h-full w-full object-contain p-2"
-                              />
-                            </div>
-                          ) : (
-                            <div className="p-4 flex items-center justify-center bg-slate-700/30 h-24">
-                              <p className="text-slate-300 text-sm">
-                                {file.name}
-                              </p>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
+            Schedule New Incident
+          </h1>
+        </motion.div>
+        <button onClick={() => setIsPostIncident(true)}>complete</button>
+        <motion.div className="lg:w-1/2 md:w-full sm:w-full bg-slate-800/50 p-6 rounded-lg">
+          <form
+            className="space-y-6"
+            onSubmit={
+              isPostIncident
+                ? handleSavePostAppointment
+                : handleSavePreAppointment
+            }
+          >
+            <div className="space-y-4">
+              {!isPostIncident && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
+                      Title
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      value={preAppointmentForm.title}
+                      onChange={handleInputChange}
+                      placeholder="Root Canal Treatment, Dental Cleaning, Emergency Visit etc"
+                      className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
+                        errors.title ? "border-red-500" : "border-slate-600"
+                      }`}
+                    />
+                    {errors.title && (
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.title}
+                      </p>
+                    )}
                   </div>
-                )}
-              </>
-            )}
-          </div>
-          <div className="flex gap-3 pt-4">
-            <motion.button
-              type="submit"
-              disabled={isLoading}
-              whileHover={{ scale: isLoading ? 1 : 1.02 }}
-              whileTap={{ scale: isLoading ? 1 : 0.98 }}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-600 via-green-700 to-green-800 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? (
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                >
-                  <Loader2 size={18} />
-                </motion.div>
-              ) : (
-                <Save size={18} />
+                  <div>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
+                      Description
+                    </label>
+                    <textarea
+                      name="description"
+                      rows={2}
+                      value={preAppointmentForm.description}
+                      onChange={handleInputChange}
+                      placeholder="Detailed Reason for Visit"
+                      className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                        errors.description
+                          ? "border-red-500"
+                          : "border-slate-600"
+                      }`}
+                    />
+                    {errors.description && (
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.description}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
+                      Comments
+                    </label>
+                    <textarea
+                      name="comments"
+                      value={preAppointmentForm.comments}
+                      onChange={handleInputChange}
+                      rows={2}
+                      placeholder="Doctor's notes, patient concerns, prep instructions etc"
+                      className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none ${
+                        errors.comments ? "border-red-500" : "border-slate-600"
+                      }`}
+                    />
+                    {errors.comments && (
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.comments}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
+                      Appointment DateTime
+                    </label>
+                    <input
+                      type="Date"
+                      name="appointmentDate"
+                      value={preAppointmentForm.appointmentDate}
+                      onChange={handleInputChange}
+                      placeholder="When the appointment is scheduled"
+                      className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                        errors.appointmentDate
+                          ? "border-red-500"
+                          : "border-slate-600"
+                      }`}
+                    />
+                    {errors.appointmentDate && (
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.appointmentDate}
+                      </p>
+                    )}
+                  </div>
+                </>
               )}
-              {isPostIncident ? "Complete Appointment" : "Schedule"}
-            </motion.button>
+              {/* post appointment form data */}
+              {isPostIncident && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
+                      Cost
+                    </label>
+                    <input
+                      type="number"
+                      name="cost"
+                      value={preAppointmentForm.cost}
+                      onChange={handleInputChange}
+                      placeholder="Root Canal Treatment, Dental Cleaning, Emergency Visit etc"
+                      className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
+                        errors.cost ? "border-red-500" : "border-slate-600"
+                      }`}
+                    />
+                    {errors.cost && (
+                      <p className="text-red-400 text-sm mt-1">{errors.cost}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
+                      Treatment
+                    </label>
+                    <input
+                      type="text"
+                      name="treatment"
+                      value={preAppointmentForm.treatment}
+                      onChange={handleInputChange}
+                      placeholder="Root Canal Treatment, Dental Cleaning, Emergency Visit etc"
+                      className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
+                        errors.treatment ? "border-red-500" : "border-slate-600"
+                      }`}
+                    />
+                    {errors.treatment && (
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.treatment}
+                      </p>
+                    )}
+                  </div>
 
-            <motion.button
-              type="button"
-              onClick={() => {
-                setErrors({});
-              }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="px-6 py-3 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700/50 transition-colors font-medium"
-            >
-              Cancel
-            </motion.button>
-          </div>
-        </form>
-      </motion.div>
-    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
+                      Next Date
+                    </label>
+                    <input
+                      type="Date"
+                      name="nextDate"
+                      value={preAppointmentForm.nextDate}
+                      onChange={handleInputChange}
+                      placeholder=""
+                      className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
+                        errors.nextDate ? "border-red-500" : "border-slate-600"
+                      }`}
+                    />
+                    {errors.nextDate && (
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.nextDate}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-200 mb-2">
+                      Files
+                    </label>
+                    <input
+                      type="file"
+                      name="files"
+                      onChange={handleFileChange}
+                      ref={imgRef}
+                      accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.txt,.csv"
+                      placeholder="Upload files"
+                      className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors  ${
+                        errors.files ? "border-red-500" : "border-slate-600"
+                      }`}
+                    />
+                    {errors.files && (
+                      <p className="text-red-400 text-sm mt-1">
+                        {errors.files}
+                      </p>
+                    )}
+                  </div>
+                  {preAppointmentForm.files.length > 0 && (
+                    <div className="mt-4 bg-slate-700/20 p-3 rounded-lg">
+                      <p className="text-sm font-medium text-slate-200 mb-3">
+                        Uploaded files ({preAppointmentForm.files.length})
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {preAppointmentForm.files.map((file, index) => (
+                          <div
+                            key={index}
+                            className="bg-slate-700/40 rounded-lg overflow-hidden flex flex-col"
+                          >
+                            <div className="flex items-center justify-between p-2 border-b border-slate-600">
+                              <span className="text-sm text-slate-300 truncate max-w-[80%]">
+                                {file.name}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setPreAppointmentForm((prev) => ({
+                                    ...prev,
+                                    files: prev.files.filter(
+                                      (_, i) => i !== index
+                                    ),
+                                  }));
+                                }}
+                                className="p-1 rounded-full hover:bg-slate-600/50"
+                                aria-label="Remove file"
+                              >
+                                <X size={18} className="text-red-400" />
+                              </button>
+                            </div>
+                            {file.url.startsWith("data:image") ? (
+                              <div className="relative pt-[56.25%]">
+                                <img
+                                  src={file.url}
+                                  alt={"image-preview"}
+                                  className="absolute top-0 left-0 h-full w-full object-contain p-2"
+                                />
+                              </div>
+                            ) : (
+                              <div className="p-4 flex items-center justify-center bg-slate-700/30 h-24">
+                                <p className="text-slate-300 text-sm">
+                                  {file.name}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+            <div className="flex gap-3 pt-4">
+              <motion.button
+                type="submit"
+                disabled={isLoading}
+                whileHover={{ scale: isLoading ? 1 : 1.02 }}
+                whileTap={{ scale: isLoading ? 1 : 0.98 }}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-600 via-green-700 to-green-800 text-white rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  >
+                    <Loader2 size={18} />
+                  </motion.div>
+                ) : (
+                  <Save size={18} />
+                )}
+                {isPostIncident ? "Complete Appointment" : "Schedule"}
+              </motion.button>
+
+              <motion.button
+                type="button"
+                onClick={() => {
+                  setErrors({});
+                }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-6 py-3 border border-slate-600 text-slate-300 rounded-lg hover:bg-slate-700/50 transition-colors font-medium"
+              >
+                Cancel
+              </motion.button>
+            </div>
+          </form>
+        </motion.div>
+      </div>
+    )
   );
 };
 

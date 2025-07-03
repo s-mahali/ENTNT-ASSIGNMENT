@@ -16,7 +16,7 @@ const appointments = [
     description: "Complete root canal procedure on lower molar",
     comments: "Patient has reported sensitivity to cold",
     appointmentDate: "2023-06-01",
-    status: "completed",
+    status: "scheduled",
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ const appointments = [
     description: "Description 2",
     comments: "Comments 2",
     appointmentDate: "2023-06-02",
-    status: "completed",
+    status: "scheduled",
   },
   {
     id: 3,
@@ -149,7 +149,7 @@ const NextAppointment = () => {
                   <span>{formatDate(appointment.appointmentDate)}</span>
                 </div>
 
-                {appointment.description && (
+                {/* {appointment.description && (
                   <div className="flex items-start text-slate-600 dark:text-slate-300 text-sm">
                     <FileText size={16} className="mr-2 flex-shrink-0 mt-1" />
                     <p>{appointment.description}</p>
@@ -160,7 +160,7 @@ const NextAppointment = () => {
                     <User size={16} className="mr-2 flex-shrink-0 mt-1" />
                     <p className="italic">{appointment.comments}</p>
                   </div>
-                )}
+                )} */}
               </div>
             </motion.div>
           ))}

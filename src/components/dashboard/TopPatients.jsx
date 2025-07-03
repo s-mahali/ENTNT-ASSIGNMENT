@@ -206,7 +206,7 @@ const TopPatients = () => {
                         </div>
                       </div>
 
-                      <div className="flex gap-4 mb-3">
+                      {/* <div className="flex gap-4 mb-3">
                         <div className="flex items-center gap-2 text-sm text-slate-300">
                           <Phone size={14} className="text-blue-400" />
                           {patient.contact}
@@ -238,7 +238,7 @@ const TopPatients = () => {
                             Manage
                           </motion.button>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </motion.div>
