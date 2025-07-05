@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import PostAppointment from './PostAppointment'
 import AppointmentList from './AppointmentList'
 import { Calendar, Plus, CheckCircle, List } from 'lucide-react'
-import ScheduleAppointmentPage from '../../page/ScheduleAppointmentPage'
+import PreAppointment from './PreAppointment'
 
 const AppointManagement = () => {
   const [activeTab, setActiveTab] = useState('schedule'); // schedule, complete, list
@@ -13,7 +13,7 @@ const AppointManagement = () => {
       id: 'schedule',
       label: 'Schedule Appointment',
       icon: <Plus className="w-4 h-4" />,
-      component: <ScheduleAppointmentPage/>
+      component: <PreAppointment/>
     },
     {
       id: 'complete',

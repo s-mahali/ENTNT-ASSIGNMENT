@@ -102,7 +102,7 @@ const AppointmentList = () => {
                 transition={{ delay: index * 0.1 }}
                 className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-6 border border-slate-700/50 hover:border-slate-600/50 transition-colors"
               >
-                {/* Header */}
+                
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-lg font-semibold text-slate-100 truncate">
                     {appointment.title}

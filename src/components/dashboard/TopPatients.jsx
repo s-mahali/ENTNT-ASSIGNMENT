@@ -1,57 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Calendar, Heart, Phone, User, Star, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
+import {useSelector} from 'react-redux'
 
-const patients = [
-  {
-    id: "p1",
-    name: "John Doe",
-    dob: "1990-05-10",
-    contact: "1234567890",
-    healthInfo: "No allergies",
-    visits: 12,
-    lastVisit: "2024-06-15",
-  },
-  {
-    id: "p2",
-    name: "Eren Yeager",
-    dob: "1985-03-22",
-    contact: "9876543210",
-    healthInfo: "Diabetes Type 2",
-    visits: 8,
-    lastVisit: "2024-06-10",
-  },
-  {
-    id: "p3",
-    name: "Levi Ackerman",
-    dob: "1978-12-25",
-    contact: "5555551234",
-    healthInfo: "Allergic to penicillin",
-    visits: 15,
-    lastVisit: "2024-06-20",
-  },
-  {
-    id: "p4",
-    name: "Mikasa Ackerman",
-    dob: "1992-02-10",
-    contact: "7777778888",
-    healthInfo: "Asthma",
-    visits: 6,
-    lastVisit: "2024-06-05",
-  },
-  {
-    id: "p5",
-    name: "Armin Arlert",
-    dob: "1993-11-03",
-    contact: "3333334444",
-    healthInfo: "No known conditions",
-    visits: 10,
-    lastVisit: "2024-06-18",
-  },
-];
+// const patients = [
+//   {
+//     id: "p1",
+//     name: "John Doe",
+//     dob: "1990-05-10",
+//     contact: "1234567890",
+//     healthInfo: "No allergies",
+//     visits: 12,
+//     lastVisit: "2024-06-15",
+//   },
+//   {
+//     id: "p2",
+//     name: "Eren Yeager",
+//     dob: "1985-03-22",
+//     contact: "9876543210",
+//     healthInfo: "Diabetes Type 2",
+//     visits: 8,
+//     lastVisit: "2024-06-10",
+//   },
+//   {
+//     id: "p3",
+//     name: "Levi Ackerman",
+//     dob: "1978-12-25",
+//     contact: "5555551234",
+//     healthInfo: "Allergic to penicillin",
+//     visits: 15,
+//     lastVisit: "2024-06-20",
+//   },
+//   {
+//     id: "p4",
+//     name: "Mikasa Ackerman",
+//     dob: "1992-02-10",
+//     contact: "7777778888",
+//     healthInfo: "Asthma",
+//     visits: 6,
+//     lastVisit: "2024-06-05",
+//   },
+//   {
+//     id: "p5",
+//     name: "Armin Arlert",
+//     dob: "1993-11-03",
+//     contact: "3333334444",
+//     healthInfo: "No known conditions",
+//     visits: 10,
+//     lastVisit: "2024-06-18",
+//   },
+// ];
+
 
 const TopPatients = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [visits, setVisits] = useState(0);
+  const [lastVisit, setLastVisit] = useState(null);
+  const {patients} = useSelector((store) => store.patients);
+
+  useEffect(() => {
+     const existingAppointments = JSON.parse(localStorage.getItem('appointments'));
+    
+  })
 
   const calculateAge = (dob) => {
     const today = new Date();

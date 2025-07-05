@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Calendar,
   Clock,
@@ -9,34 +9,44 @@ import {
   X,
 } from "lucide-react";
 import { motion } from "framer-motion";
-const appointments = [
-  {
-    id: 1,
-    title: "Root Canal Treatment",
-    description: "Complete root canal procedure on lower molar",
-    comments: "Patient has reported sensitivity to cold",
-    appointmentDate: "2023-06-01",
-    status: "scheduled",
-  },
-  {
-    id: 2,
-    title: "Appointment 2",
-    description: "Description 2",
-    comments: "Comments 2",
-    appointmentDate: "2023-06-02",
-    status: "scheduled",
-  },
-  {
-    id: 3,
-    title: "Appointment 3",
-    description: "Description 3",
-    comments: "Comments 3",
-    appointmentDate: "2023-06-03",
-    status: "scheduled",
-  },
-];
+// const appointments = [
+//   {
+//     id: 1,
+//     title: "Root Canal Treatment",
+//     description: "Complete root canal procedure on lower molar",
+//     comments: "Patient has reported sensitivity to cold",
+//     appointmentDate: "2023-06-01",
+//     status: "scheduled",
+//   },
+//   {
+//     id: 2,
+//     title: "Appointment 2",
+//     description: "Description 2",
+//     comments: "Comments 2",
+//     appointmentDate: "2023-06-02",
+//     status: "scheduled",
+//   },
+//   {
+//     id: 3,
+//     title: "Appointment 3",
+//     description: "Description 3",
+//     comments: "Comments 3",
+//     appointmentDate: "2023-06-03",
+//     status: "scheduled",
+//   },
+// ];
 
 const NextAppointment = () => {
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+     const existingAppointments = JSON.parse(localStorage.getItem("appointments") || "[]");
+    const upcomingAppointments = existingAppointments.filter((appointment) => 
+        appointment.status === "scheduled"
+     ).sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate));
+     setAppointments(upcomingAppointments);
+  },[]);
+  
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {

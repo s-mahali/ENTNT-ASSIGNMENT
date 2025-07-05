@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   TrendingUp,
   Users,
@@ -8,14 +8,35 @@ import {
   Clock,
 } from "lucide-react";
 const Stats = () => {
-  const statsData = {
-    totalRevenue: 24650,
-    totalPatients: 250,
-    completedAppointments: 50,
-    pendingAppointments: 50,
+  const [statsData, setStatsData] = useState({
+    totalRevenue: 0,
+    totalPatients: 0,
+    completedAppointments: 0,
+    pendingAppointments: 0,
     averageCost: 283,
     monthlyGrowth: 12.6,
-  };
+  });
+
+  useEffect(() => {
+    const existingAppointments = JSON.parse(
+      localStorage.getItem("appointments") || "[]"
+    );
+    const patients = JSON.parse(localStorage.getItem("patients") || "[]");
+    setStatsData((prevStats) => ({
+      ...prevStats,
+      totalRevenue: existingAppointments.reduce(
+        (total, app) => total + app.cost,
+        0
+      ),
+      totalPatients: patients.length,
+      completedAppointments: existingAppointments.filter(
+        (app) => app.status === "completed"
+      ).length,
+      pendingAppointments: existingAppointments.filter(
+        (app) => app.status === "scheduled"
+      ).length,
+    }));
+  }, []);
   return (
     <div className="w-full p-4 md:p-6">
       <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4">
