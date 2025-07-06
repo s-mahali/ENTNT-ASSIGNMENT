@@ -4,6 +4,7 @@ const initialState = {
   user: null,
   status: false,
   isAdmin: false,
+  users:[],
 };
 
 const authSlice = createSlice({
@@ -20,6 +21,7 @@ const authSlice = createSlice({
     setAdmin: (state) => {
       state.isAdmin = true;
     },
+    
   },
 });
 export const { setAuthUser, setStatus, setAdmin } = authSlice.actions;

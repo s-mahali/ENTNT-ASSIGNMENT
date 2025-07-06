@@ -372,7 +372,7 @@ const ManagePatient = () => {
                           <p className="text-sm text-slate-300 line-clamp-2">
                             {patient.healthInfo}
                           </p>
-                          <button className="text-slate-400 hover:text-slate-100 transition-colors mt-2">manage patient</button>
+                          
                         </div>
                       </div>
                     </motion.div>

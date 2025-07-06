@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { setAuthUser } from "../redux/slicers/authSlice";
+import { setAuthUser} from "../redux/slicers/authSlice";
+import { setPatientUsers } from "../redux/slicers/patientSlice";
 import { useDispatch } from "react-redux";
 import {
   LayoutDashboard,
@@ -31,7 +32,7 @@ const LeftNavbar = () => {
     },
     {
       icon: <UserRound />,
-      text: "userDashboard",
+      text: "userdashboard",
     },
 
     {
@@ -44,6 +45,7 @@ const LeftNavbar = () => {
     try {
       localStorage.removeItem("user-cred");
       dispatch(setAuthUser(null));
+      dispatch(setPatientUsers([]));
       navigate("/login");
       toast.success("Logout successful");
     } catch (error) {
@@ -65,8 +67,8 @@ const LeftNavbar = () => {
       case "appointments":
         navigate("/appointments");
         break;
-      case "userDashboard":
-        navigate("/userDashboard");
+      case "userdashboard":
+        navigate("/dashboard");
         break;
       default:
         break;

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { colors } from "../../utils/colors";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { setAuthUser } from "../../redux/slicers/authSlice";
-import { useDispatch } from "react-redux";
+import { setAuthUser} from "../../redux/slicers/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Stethoscope,
   Eye,
@@ -31,6 +31,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {users} = useSelector((store) => store.auth)
 
   // Hardcoded users
   const HARDCODED_USERS = [
@@ -108,11 +109,12 @@ const Login = () => {
         console.log("user-cred", userWithoutPassword);
         localStorage.setItem("user-cred", JSON.stringify(userWithoutPassword));
         dispatch(setAuthUser(userWithoutPassword));
+        
         // Navigate based on role
         if (user.role === "admin") {
-          navigate("/admin-dashboard");
+          navigate("/admindashboard");
         } else {
-          navigate("/patient-dashboard");
+          navigate("/dashboard");
         }
         toast.success(`Welcome back, ${user.name}!`);
       } else {

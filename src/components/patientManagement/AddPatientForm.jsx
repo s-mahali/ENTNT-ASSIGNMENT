@@ -4,6 +4,7 @@ import { setPatientUsers } from "../../redux/slicers/patientSlice";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
 import { Save, Loader2 } from "lucide-react";
+import { setAuthUser } from "../../redux/slicers/authSlice";
 
 const AddPatientForm = ({
   isEditing,
@@ -12,9 +13,12 @@ const AddPatientForm = ({
   setIsEditing,
   selectedPatient,
   onSave,
+  
 }) => {
+  //const isUser = true;
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isUser, setIsUser] = useState(false);
   const [addForm, setAddForm] = useState({
     name: "",
     dob: "",
@@ -23,9 +27,10 @@ const AddPatientForm = ({
     id: `p${Date.now()}`,
   });
   const { patients } = useSelector((store) => store.patients);
+  const { user } = useSelector((store) => store.auth);
+  console.log("user", user);
   const dispatch = useDispatch();
 
-  
   const savePatientsToStorage = (patientsData) => {
     try {
       localStorage.setItem("patients", JSON.stringify(patientsData || []));
@@ -46,6 +51,13 @@ const AddPatientForm = ({
         id: `p${Date.now()}`,
       });
     }
+
+    if(user.role === "user"){
+      setIsUser(true);
+    }
+
+
+    
   }, [isEditing, isAdding, selectedPatient]);
 
   const handleInputChange = (e) => {
@@ -89,7 +101,7 @@ const AddPatientForm = ({
     try {
       // simulate api delay
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      
+
       if (isEditing) {
         // Update existing patient
         const updatedPatients = patients.map((p) =>
@@ -102,12 +114,22 @@ const AddPatientForm = ({
         if (onSave) onSave(addForm);
       } else {
         // Add new patient
-        const newPatient = { ...addForm, id: `p${Date.now()}` };
+        let newPatient;
+        newPatient = { ...addForm, id: `p${Date.now()}` };
+
         const updatedPatients = [...patients, newPatient];
         dispatch(setPatientUsers(updatedPatients));
         savePatientsToStorage(updatedPatients);
+        isUser ?  null : setIsAdding(false) 
+
+        if (isUser) {
+          const updateUser = { ...user, pateintId: newPatient.id };
+          localStorage.setItem("user-cred", JSON.stringify(updateUser));
+          dispatch(setAuthUser(updateUser));
+          
+        }
         toast.success("Patient added successfully");
-        setIsAdding(false);
+
         if (onSave) onSave(newPatient);
       }
 
@@ -144,7 +166,7 @@ const AddPatientForm = ({
             onChange={handleInputChange}
             placeholder="Enter patient's full name"
             className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              errors.name ? 'border-red-500' : 'border-slate-600'
+              errors.name ? "border-red-500" : "border-slate-600"
             }`}
           />
           {errors.name && (
@@ -162,7 +184,7 @@ const AddPatientForm = ({
             value={addForm.dob}
             onChange={handleInputChange}
             className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              errors.dob ? 'border-red-500' : 'border-slate-600'
+              errors.dob ? "border-red-500" : "border-slate-600"
             }`}
           />
           {errors.dob && (
@@ -181,7 +203,7 @@ const AddPatientForm = ({
             onChange={handleInputChange}
             placeholder="Enter contact number"
             className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-              errors.contact ? 'border-red-500' : 'border-slate-600'
+              errors.contact ? "border-red-500" : "border-slate-600"
             }`}
           />
           {errors.contact && (
@@ -200,7 +222,7 @@ const AddPatientForm = ({
             rows={4}
             placeholder="Medical conditions, allergies, medications, etc."
             className={`w-full px-4 py-3 bg-slate-700/30 border rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none ${
-              errors.healthInfo ? 'border-red-500' : 'border-slate-600'
+              errors.healthInfo ? "border-red-500" : "border-slate-600"
             }`}
           />
           {errors.healthInfo && (
@@ -227,12 +249,15 @@ const AddPatientForm = ({
           ) : (
             <Save size={18} />
           )}
-          {isLoading 
-            ? (isEditing ? "Updating..." : "Saving...") 
-            : (isEditing ? "Update Patient" : "Save Patient")
-          }
+          {isLoading
+            ? isEditing
+              ? "Updating..."
+              : "Saving..."
+            : isEditing
+            ? "Update Patient"
+            : "Save Patient"}
         </motion.button>
-        
+
         <motion.button
           type="button"
           onClick={() => {

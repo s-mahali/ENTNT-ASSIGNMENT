@@ -16,6 +16,7 @@ const PostAppointment = () => {
   const imgRef = useRef(null);
   const [scheduledIncident, setScheduledIncident] = useState([]);
   const [selectedIncident, setSelectedIncident] = useState(null);
+  
 
   const [postAppointmentForm, setPostAppointmentForm] = useState({
     id: `p${Date.now()}`,
@@ -89,9 +90,11 @@ const PostAppointment = () => {
         comments: selectedIncident.comments,
         appointmentDate: selectedIncident.appointmentDate,
         status: "completed",
-        updatedAt: new Date().toISOString(),
+        patientId: preAppointment.patientId,
+        
       };
       console.log("completedAppointment", completedAppointment);
+      console.log("preAppointment", preAppointment);
 
       //Remove the pre-appointment object and add the completed one
       const newAppointmentsData = existingAppointments.filter(

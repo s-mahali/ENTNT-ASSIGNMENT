@@ -7,6 +7,8 @@ import ManagePatientPage from "./page/ManagePatientPage";
 import MainLayout from "./page/MainLayout";
 import AppointmentPage from "./page/AppointmentPage";
 import AdminDashboardPage from "./page/AdminDashboardPage";
+import UserDashboardPage from "./page/UserDashboardPage";
+
 const App = () => {
   const browserRouter = createBrowserRouter([
     {
@@ -28,6 +30,10 @@ const App = () => {
         {
           path: "/admindashboard",
           element: <AdminDashboardPage />,
+        },
+        {
+          path: "/dashboard",
+          element: <UserDashboardPage />,
         },
       ],
     },

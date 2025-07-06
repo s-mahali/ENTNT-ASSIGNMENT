@@ -17,7 +17,7 @@ import {
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import PostAppointment from "./PostAppointment";
+
 
 const PreAppointment = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +52,7 @@ const PreAppointment = () => {
     setSelectedPatient(patient);
     setSelectedPatientId(patient.id);
   };
+
 
   const handleInputChange = (e) => {
     setPreAppointmentForm({
@@ -108,6 +109,7 @@ const PreAppointment = () => {
         ...preAppointmentForm,
         id: `app_${Date.now()}`,
         title: preAppointmentForm.title.trim(),
+        patientId: selectedPatientId,
         status: "scheduled", // scheduled, completed
         createdAt: new Date().toISOString(),
       };
