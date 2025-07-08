@@ -94,7 +94,8 @@ Manage patient records, schedule appointments, record treatments
 Patients:
 View their appointments, medical history, and treatment plans
 
-Testing Functionality
+## Testing Functionality
+
 Login as a user (see credentials above)
 Create a patient account after logging in as a patient
 Login as admin to manage patients, appointments, and view statistics
