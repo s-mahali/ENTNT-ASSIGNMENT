@@ -13,7 +13,6 @@ const AddPatientForm = ({
   setIsEditing,
   selectedPatient,
   onSave,
-  
 }) => {
   //const isUser = true;
   const [errors, setErrors] = useState({});
@@ -28,7 +27,6 @@ const AddPatientForm = ({
   });
   const { patients } = useSelector((store) => store.patients);
   const { user } = useSelector((store) => store.auth);
-  console.log("user", user);
   const dispatch = useDispatch();
 
   const savePatientsToStorage = (patientsData) => {
@@ -52,12 +50,9 @@ const AddPatientForm = ({
       });
     }
 
-    if(user.role === "user"){
+    if (user.role === "user") {
       setIsUser(true);
     }
-
-
-    
   }, [isEditing, isAdding, selectedPatient]);
 
   const handleInputChange = (e) => {
@@ -120,13 +115,13 @@ const AddPatientForm = ({
         const updatedPatients = [...patients, newPatient];
         dispatch(setPatientUsers(updatedPatients));
         savePatientsToStorage(updatedPatients);
-        isUser ?  null : setIsAdding(false) 
+        isUser ? null : setIsAdding(false);
 
         if (isUser) {
-          const updateUser = { ...user, pateintId: newPatient.id };
-          localStorage.setItem("user-cred", JSON.stringify(updateUser));
-          dispatch(setAuthUser(updateUser));
-          
+          const updatedPatient = { ...newPatient, userId: user.id };
+          const updatedPatients = [...patients, updatedPatient];
+          savePatientsToStorage(updatedPatients);
+          dispatch(setPatientUsers([...patients, updatedPatient]));
         }
         toast.success("Patient added successfully");
 

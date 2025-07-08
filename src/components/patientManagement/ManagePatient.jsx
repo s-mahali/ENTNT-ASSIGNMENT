@@ -1,74 +1,17 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  User,
-  Phone,
-  Calendar,
-  Heart,
-  Edit,
-  Trash2,
-  Plus,
-  X,
-  Search,
-  AlertTriangle
-} from "lucide-react";
+import { Plus, X, Search, AlertTriangle } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPatientUsers } from "../../redux/slicers/patientSlice";
 import AddPatientForm from "./AddPatientForm";
 import PatientTable from "./PatientTable";
 import toast from "react-hot-toast";
 
-// const patientData = [
-//   {
-//     id: "p1",
-//     name: "John Doe",
-//     dob: "1990-05-10",
-//     contact: "1234567890",
-//     healthInfo: "No allergies",
-//   },
-//   {
-//     id: "p2",
-//     name: "Eren Yeager",
-//     dob: "1985-08-22",
-//     contact: "9876543210",
-//     healthInfo: "Diabetes Type 2, High blood pressure",
-//   },
-//   {
-//     id: "p3",
-//     name: "Mikasa Ackerman",
-//     dob: "1978-12-15",
-//     contact: "5555551234",
-//     healthInfo: "Allergic to penicillin",
-//   },
-//   {
-//     id: "p4",
-//     name: "Horikita san",
-//     dob: "1992-03-08",
-//     contact: "7777778888",
-//     healthInfo: "Asthma, seasonal allergies",
-//   },
-//   {
-//     id: "p5",
-//     name: "Lata Kumari",
-//     dob: "1965-11-30",
-//     contact: "3333334444",
-//     healthInfo: "Heart condition, takes blood thinners",
-//   },
-//   {
-//     id: "p6",
-//     name: "Harshit Sharma",
-//     dob: "1988-07-12",
-//     contact: "6666667777",
-//     healthInfo: "No known medical conditions",
-//   },
-// ];
-
 const ManagePatient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-  const [editForm, setEditForm] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [viewModalOpen, setViewModalOpen] = useState(false);
@@ -120,21 +63,6 @@ const ManagePatient = () => {
     });
   };
 
-  // const formatPhone = (phone) => {
-  //   const cleaned = phone.replace(/\D/g, "");
-  //   const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-  //   if (match) {
-  //     return `(${match[1]}) ${match[2]}-${match[3]}`;
-  //   }
-  //   return phone;
-  // };
-
-  const handlePatientClick = (patient) => {
-    setSelectedPatient(patient);
-    setIsEditing(false);
-    setIsAdding(false);
-  };
-
   //fetch-all-patients
   useEffect(() => {
     const fetchAllPatient = async () => {
@@ -144,7 +72,7 @@ const ManagePatient = () => {
         await new Promise((resolve) => setTimeout(resolve, 1500));
         const patientsData = getPatientsFromStorage();
         dispatch(setPatientUsers(patientsData));
-        console.log("Loaded patients from localStorage:", patientsData);
+        
       } catch (error) {
         console.error("Error while fetching patients:", error.message);
         dispatch(setPatientUsers([]));
@@ -157,19 +85,19 @@ const ManagePatient = () => {
   }, [dispatch]);
 
   const handleEdit = (patient) => {
-    setSelectedPatient(patient)
+    setSelectedPatient(patient);
     setIsEditing(true);
   };
 
   const handleView = (patient) => {
     setSelectedPatient(patient);
     setViewModalOpen(true);
-  }
+  };
 
   const handleDelete = (patient) => {
-     setSelectedPatient(patient);
-     setDeleteModalOpen(true);
-  }
+    setSelectedPatient(patient);
+    setDeleteModalOpen(true);
+  };
 
   const handleSave = (patient) => {
     const updatePatients = patients.map((p) =>
@@ -188,8 +116,6 @@ const ManagePatient = () => {
     setSelectedPatient(newPatient);
     setIsAdding(false);
   };
-
-  
 
   const confirmDelete = () => {
     if (patients && patients.length > 0) {
@@ -212,50 +138,6 @@ const ManagePatient = () => {
     setIsAdding(true);
     setSelectedPatient(null);
     setIsEditing(false);
-  };
-
-  
-
-  //framer-motion helper function
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.3,
-      },
-    },
-  };
-
-  const sidebarVariants = {
-    hidden: { x: "100%", opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        damping: 25,
-        stiffness: 200,
-      },
-    },
-    exit: {
-      x: "100%",
-      opacity: 0,
-      transition: {
-        duration: 0.2,
-      },
-    },
   };
 
   return (
@@ -304,7 +186,7 @@ const ManagePatient = () => {
         </motion.div>
 
         {/* Patient Table */}
-         {isLoading ? (
+        {isLoading ? (
           <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-12 text-center">
             <motion.div
               animate={{ rotate: 360 }}
@@ -342,7 +224,9 @@ const ManagePatient = () => {
                 className="bg-slate-800/95 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 max-w-2xl w-full max-h-[90vh] overflow-auto"
               >
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-bold text-slate-100">Patient Details</h3>
+                  <h3 className="text-xl font-bold text-slate-100">
+                    Patient Details
+                  </h3>
                   <button
                     onClick={() => setViewModalOpen(false)}
                     className="text-slate-400 hover:text-slate-100 transition-colors"
@@ -350,35 +234,57 @@ const ManagePatient = () => {
                     <X size={24} />
                   </button>
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-slate-700/30 rounded-lg p-4">
-                      <h4 className="text-sm font-medium text-slate-400 mb-1">Full Name</h4>
+                      <h4 className="text-sm font-medium text-slate-400 mb-1">
+                        Full Name
+                      </h4>
                       <p className="text-slate-100">{selectedPatient.name}</p>
                     </div>
                     <div className="bg-slate-700/30 rounded-lg p-4">
-                      <h4 className="text-sm font-medium text-slate-400 mb-1">Age</h4>
-                      <p className="text-slate-100">{calculateAge(selectedPatient.dob)} years</p>
+                      <h4 className="text-sm font-medium text-slate-400 mb-1">
+                        Age
+                      </h4>
+                      <p className="text-slate-100">
+                        {calculateAge(selectedPatient.dob)} years
+                      </p>
                     </div>
                     <div className="bg-slate-700/30 rounded-lg p-4">
-                      <h4 className="text-sm font-medium text-slate-400 mb-1">Date of Birth</h4>
-                      <p className="text-slate-100">{formatDate(selectedPatient.dob)}</p>
+                      <h4 className="text-sm font-medium text-slate-400 mb-1">
+                        Date of Birth
+                      </h4>
+                      <p className="text-slate-100">
+                        {formatDate(selectedPatient.dob)}
+                      </p>
                     </div>
                     <div className="bg-slate-700/30 rounded-lg p-4">
-                      <h4 className="text-sm font-medium text-slate-400 mb-1">Contact</h4>
-                      <p className="text-slate-100">{selectedPatient.contact}</p>
+                      <h4 className="text-sm font-medium text-slate-400 mb-1">
+                        Contact
+                      </h4>
+                      <p className="text-slate-100">
+                        {selectedPatient.contact}
+                      </p>
                     </div>
                     {selectedPatient.email && (
                       <div className="bg-slate-700/30 rounded-lg p-4 md:col-span-2">
-                        <h4 className="text-sm font-medium text-slate-400 mb-1">Email</h4>
-                        <p className="text-slate-100">{selectedPatient.email}</p>
+                        <h4 className="text-sm font-medium text-slate-400 mb-1">
+                          Email
+                        </h4>
+                        <p className="text-slate-100">
+                          {selectedPatient.email}
+                        </p>
                       </div>
                     )}
                   </div>
                   <div className="bg-slate-700/30 rounded-lg p-4">
-                    <h4 className="text-sm font-medium text-slate-400 mb-2">Health Information</h4>
-                    <p className="text-slate-100">{selectedPatient.healthInfo}</p>
+                    <h4 className="text-sm font-medium text-slate-400 mb-2">
+                      Health Information
+                    </h4>
+                    <p className="text-slate-100">
+                      {selectedPatient.healthInfo}
+                    </p>
                   </div>
                 </div>
               </motion.div>
@@ -386,7 +292,7 @@ const ManagePatient = () => {
           )}
         </AnimatePresence>
 
-         {/* Edit Patient Modal */}
+        {/* Edit Patient Modal */}
         <AnimatePresence>
           {isEditing && selectedPatient && (
             <motion.div
@@ -404,7 +310,9 @@ const ManagePatient = () => {
                 className="bg-slate-800/95 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 max-w-2xl w-full max-h-[90vh] overflow-auto"
               >
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-bold text-slate-100">Edit Patient</h3>
+                  <h3 className="text-xl font-bold text-slate-100">
+                    Edit Patient
+                  </h3>
                   <button
                     onClick={() => setIsEditing(false)}
                     className="text-slate-400 hover:text-slate-100 transition-colors"
@@ -412,7 +320,7 @@ const ManagePatient = () => {
                     <X size={24} />
                   </button>
                 </div>
-                
+
                 <AddPatientForm
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
@@ -442,7 +350,9 @@ const ManagePatient = () => {
                 className="bg-slate-800/95 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 max-w-2xl w-full max-h-[90vh] overflow-auto"
               >
                 <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-xl font-bold text-slate-100">Add New Patient</h3>
+                  <h3 className="text-xl font-bold text-slate-100">
+                    Add New Patient
+                  </h3>
                   <button
                     onClick={() => setIsAdding(false)}
                     className="text-slate-400 hover:text-slate-100 transition-colors"
@@ -450,7 +360,7 @@ const ManagePatient = () => {
                     <X size={24} />
                   </button>
                 </div>
-                
+
                 <AddPatientForm
                   isAdding={isAdding}
                   setIsAdding={setIsAdding}
@@ -480,13 +390,15 @@ const ManagePatient = () => {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <AlertTriangle size={24} className="text-amber-500" />
-                  <h3 className="text-xl font-bold text-slate-100">Confirm Delete</h3>
+                  <h3 className="text-xl font-bold text-slate-100">
+                    Confirm Delete
+                  </h3>
                 </div>
-                
+
                 {selectedPatient && (
                   <div className="mb-6">
                     <p className="text-slate-300 mb-4">
-                      Are you sure you want to delete this patient? 
+                      Are you sure you want to delete this patient?
                     </p>
                     <div className="bg-slate-700/30 rounded-lg p-4">
                       <h4 className="text-lg font-semibold text-slate-100 mb-2">

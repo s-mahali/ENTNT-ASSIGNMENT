@@ -98,13 +98,13 @@ const InitialLanding = () => {
               </div>
 
               <div className="flex flex-col lg:items-center lg:justify-center sm:flex-row gap-4">
-                <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 flex items-center justify-center group">
+                {/* <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 flex items-center justify-center group">
                   Start Free Trial
                   <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button className="border-2 border-blue-400 text-blue-400 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-400 hover:text-white transition-all duration-200">
                   Watch Demo
-                </button>
+                </button> */}
               </div>
 
               <div className="flex items-center md:justify-start lg:justify-center sm:justify-center space-x-8 pt-4">

@@ -31,7 +31,8 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {users} = useSelector((store) => store.auth)
+  const {users} = useSelector((store) => store.auth);
+  
 
   // Hardcoded users
   const HARDCODED_USERS = [
@@ -41,6 +42,7 @@ const Login = () => {
       role: "user",
       name: "John Doe",
       id: 1,
+      
       
       
     },
@@ -108,7 +110,6 @@ const Login = () => {
 
       if (user) {
         const { password, ...userWithoutPassword } = user;
-        console.log("user-cred", userWithoutPassword);
         localStorage.setItem("user-cred", JSON.stringify(userWithoutPassword));
         dispatch(setAuthUser(userWithoutPassword));
         

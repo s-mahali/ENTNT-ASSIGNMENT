@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Tooltip from "@mui/material/Tooltip";
+import { setPatientUsers } from "../redux/slicers/patientSlice";
 
 const LeftNavbar = () => {
   const navigate = useNavigate();

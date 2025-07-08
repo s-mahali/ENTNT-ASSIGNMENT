@@ -27,11 +27,9 @@ const UserDashboard = () => {
   const { user } = useSelector((store) => store.auth);
   const { patients } = useSelector((store) => store.patients);
 
-  
-
   useEffect(() => {
-    if (user?.pateintId && patients?.length > 0) {
-      const patient = patients.find((p) => p.id === user?.pateintId);
+    if (patients && patients?.length > 0) {
+      const patient = patients.find((p) => p.userId === user.id);
       setPatietData(patient);
 
       const allAppointments = JSON.parse(
@@ -47,7 +45,8 @@ const UserDashboard = () => {
         userAppointments &&
         userAppointments.filter(
           (app) =>
-            (new Date(app.appointmentDate) >= now && app.status === "scheduled") ||
+            (new Date(app.appointmentDate) >= now &&
+              app.status === "scheduled") ||
             app.status === "scheduled"
         );
       const past =
@@ -61,7 +60,7 @@ const UserDashboard = () => {
       setUpcomingAppointments([]);
       setPastAppointments([]);
     }
-  }, [user?.pateintId, patients]);
+  }, [patients]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -190,10 +189,8 @@ const UserDashboard = () => {
 
         {/* Appointments List */}
         <div className="space-y-4 overflow-x-auto">
-          {(activeTab === "upcoming"
-            ? upcomingAppointments
-            : pastAppointments
-          )?.length > 0 ? (
+          {(activeTab === "upcoming" ? upcomingAppointments : pastAppointments)
+            ?.length > 0 ? (
             (activeTab === "upcoming"
               ? upcomingAppointments
               : pastAppointments

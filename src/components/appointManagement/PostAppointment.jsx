@@ -93,8 +93,7 @@ const PostAppointment = ({onCompletion}) => {
         patientId: preAppointment.patientId,
         
       };
-      console.log("completedAppointment", completedAppointment);
-      console.log("preAppointment", preAppointment);
+      
 
       //Remove the pre-appointment object and add the completed one
       const newAppointmentsData = existingAppointments.filter(
@@ -116,7 +115,6 @@ const PostAppointment = ({onCompletion}) => {
         prev.filter((app) => app.id !== selectedIncident.id)
       );
       setSelectedIncident(null);
-      console.log("updatedAppointments", allAppointments);
       toast.success("Appointment completed successfully");
       onCompletion && onCompletion();
       
@@ -179,8 +177,7 @@ const PostAppointment = ({onCompletion}) => {
 
   const handleSelectIncident = (incident) => {
     setSelectedIncident(incident);
-    console.log("incident", incident);
-    console.log("selected", selectedIncident);
+    
   };
 
   useEffect(() => {
@@ -192,7 +189,7 @@ const PostAppointment = ({onCompletion}) => {
     );
     setScheduledIncident(scheduledIncident);
   }, []);
-  console.log("scheduleIncident", scheduledIncident);
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">

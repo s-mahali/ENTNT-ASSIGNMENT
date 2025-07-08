@@ -10,17 +10,19 @@ const UserDashboardPage = () => {
   const [isPatient, setIsPatient] = useState(false);
   const [isPatientForm, setIsPatientForm] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  
+  const {patients} = useSelector((store) => store.patients);
+  const patient = patients?.find((p) => p.userId === user.id);
   
   useEffect(() => {
-    if (user?.pateintId) {
+    
+    if (patient) {
       setIsPatient(true);
       setIsPatientForm(false);
     }
     if (user?.role === "admin") {
       setIsAdmin(true);
     }
-  }, [user?.pateintId, ]);
+  }, [patient]);
 
  
 

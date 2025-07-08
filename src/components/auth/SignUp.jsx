@@ -67,7 +67,6 @@ const SignUp = () => {
     if (signupForm.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters long";
     }
-    console.log("erros", newErrors);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -79,9 +78,8 @@ const SignUp = () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
       localStorage.setItem("user-cred", JSON.stringify(signupForm));
-     console.log("user-signup-details", signupForm);
-      dispatch(setAuthUser(signupForm));
-      //navigate("/dashboard");
+     dispatch(setAuthUser(signupForm));
+      
       toast.success("Signup successfull");
     } catch (error) {
       console.error("error while signup", error.message);
@@ -412,7 +410,7 @@ const SignUp = () => {
         {/* Footer */}
         <motion.div variants={itemVariants} className="text-center">
           <Typography variant="caption" className="text-slate-500">
-            © 2025 DentalOg. All rights reserved.
+            © 2025 ENTNT. All rights reserved.
           </Typography>
         </motion.div>
       </motion.div>

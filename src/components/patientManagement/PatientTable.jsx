@@ -35,7 +35,7 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 
 const StyledTableHead = styled(TableHead)(({ theme }) => ({
   '& .MuiTableCell-head': {
-    backgroundColor: 'rgba(30, 41, 59, 0.8)',
+    backgroundColor: 'rgba(38, 41, 59, 0.8)',
     color: '#e2e8f0',
     fontWeight: 600,
     fontSize: '0.875rem',
@@ -110,13 +110,6 @@ const PatientTable = ({
     setPage(0);
   };
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
 
   const truncateText = (text, maxLength = 50) => {
     if (!text) return '-';
@@ -139,8 +132,7 @@ const PatientTable = ({
           <StyledTableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell align="center">Age</TableCell>
+              <TableCell align='center'>Age</TableCell>
               <TableCell>Contact</TableCell>
               <TableCell>Health Info</TableCell>
               <TableCell align="center">Actions</TableCell>
@@ -162,29 +154,11 @@ const PatientTable = ({
                       >
                         {patient.name}
                       </Typography>
-                      <Typography 
-                        variant="caption" 
-                        sx={{ 
-                          color: '#94a3b8',
-                          fontSize: '0.75rem'
-                        }}
-                      >
-                        ID: {patient.patientId || patient.id}
-                      </Typography>
+                      
                     </Box>
                   </TableCell>
                   
-                  <TableCell>
-                    <Typography 
-                      variant="body2" 
-                      sx={{ 
-                        color: patient.email ? '#60a5fa' : '#94a3b8',
-                        fontSize: '0.875rem'
-                      }}
-                    >
-                      {patient.email || 'Not provided'}
-                    </Typography>
-                  </TableCell>
+                 
                   
                   <TableCell align="center">
                     <Chip
@@ -210,15 +184,7 @@ const PatientTable = ({
                     >
                       {patient.contact}
                     </Typography>
-                    <Typography 
-                      variant="caption" 
-                      sx={{ 
-                        color: '#94a3b8',
-                        fontSize: '0.75rem'
-                      }}
-                    >
-                      DOB: {formatDate(patient.dob)}
-                    </Typography>
+                    
                   </TableCell>
                   
                   <TableCell>

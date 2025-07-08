@@ -126,8 +126,6 @@ const PreAppointment = ({onScheduled}) => {
         appointmentDate: "",
       });
       setErrors({});
-
-      console.log("appointmentData", newAppointment);
       toast.success("Appointment scheduled successfully");
       onScheduled && onScheduled();
     } catch (error) {
