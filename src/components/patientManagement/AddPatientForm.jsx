@@ -255,7 +255,7 @@ const AddPatientForm = ({
               : "Saving..."
             : isEditing
             ? "Update Patient"
-            : "Save Patient"}
+            : "Save"}
         </motion.button>
 
         <motion.button

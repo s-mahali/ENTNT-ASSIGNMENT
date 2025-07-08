@@ -174,6 +174,26 @@ const NextAppointment = () => {
               </div>
             </motion.div>
           ))}
+          {
+            appointments.length < 1 && (
+              <motion.div
+                variants={cardVariants}
+                whileHover={{
+                  y: -2,
+                  scale: 1.01,
+                  transition: { duration: 0.2 },
+                }}
+                whileTap={{ scale: 0.99 }}
+                className="group cursor-pointer bg-slate-800/70 rounded-lg p-5 border backdrop-blur-md  border-slate-700/50 hover:border-slate-600/50 transition-all duration-300  relative"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="font-semibold text-lg text-slate-800 dark:text-slate-100">
+                    No Appointments Scheduled
+                  </h3>
+                </div>
+              </motion.div>
+            )
+          }
       </motion.div>
     </motion.div>
   );

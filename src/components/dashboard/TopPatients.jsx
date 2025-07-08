@@ -54,14 +54,42 @@ import {useSelector} from 'react-redux'
 
 const TopPatients = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [visits, setVisits] = useState(0);
-  const [lastVisit, setLastVisit] = useState(null);
+  const [patientStats, setPatientStats] = useState([]);
   const {patients} = useSelector((store) => store.patients);
 
   useEffect(() => {
-     const existingAppointments = JSON.parse(localStorage.getItem('appointments'));
+      setIsLoading(true);
+    const existingAppointments = JSON.parse(localStorage.getItem('appointments') || "[]");
+
+    // Map each patient to their visit count and last visit date
+    const stats = patients.map((patient) => {
+      const patientAppointments = existingAppointments.filter(
+        (app) => app.patientId === patient.id
+      );
+      const visits = patientAppointments.length;
+      let lastVisit = null;
+      if (visits > 0) {
+        
+        lastVisit = patientAppointments
+          .map(app => new Date(app.appointmentDate || app.nextDate))
+          .sort((a, b) => b - a)[0];
+      }
+      return {
+        ...patient,
+        visits: visits,
+        lastVisit: lastVisit,
+      };
+    });
+
     
-  })
+
+    setPatientStats(stats.slice(0, 10)); // Top 10
+    setIsLoading(false);
+      
+      
+    
+    
+  },[patients])
 
   const calculateAge = (dob) => {
     const today = new Date();
@@ -181,8 +209,8 @@ const TopPatients = () => {
             animate="visible"
             className="space-y-4"
           >
-            {patients && patients.length > 0 ? (
-              patients.map((patient, index) => (
+            {patientStats && patientStats.length > 0 ? (
+              patientStats.map((patient, index) => (
                 <motion.div
                   key={patient.id}
                   variants={cardVariants}
@@ -279,9 +307,7 @@ const TopPatients = () => {
       >
         <div className="flex justify-between items-center text-sm text-slate-400">
           <span>Showing top {patients.length} patients</span>
-          <span>
-            Total visits: {patients.reduce((sum, p) => sum + p.visits, 0)}
-          </span>
+          
         </div>
       </motion.div>
     </div>

@@ -8,32 +8,51 @@ import MainLayout from "./page/MainLayout";
 import AppointmentPage from "./page/AppointmentPage";
 import AdminDashboardPage from "./page/AdminDashboardPage";
 import UserDashboardPage from "./page/UserDashboardPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
+  const user = JSON.parse(localStorage.getItem("user-cred" || []));
   const browserRouter = createBrowserRouter([
     {
       path: "/",
       element: <MainLayout />,
+
       children: [
         {
           path: "/",
-          element: <InitialLanding />,
+          element: <InitialLanding/>
         },
         {
           path: "/patients",
-          element: <ManagePatientPage />,
+          element: (
+            <ProtectedRoute role="admin">
+              <ManagePatientPage />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/appointments",
-          element: <AppointmentPage />,
+          element: (
+            <ProtectedRoute role="admin">
+              <AppointmentPage />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/admindashboard",
-          element: <AdminDashboardPage />,
+          element: (
+            <ProtectedRoute role="admin">
+              <AdminDashboardPage />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/dashboard",
-          element: <UserDashboardPage />,
+          element: (
+            <ProtectedRoute role="user">
+              <UserDashboardPage />
+            </ProtectedRoute>
+          ),
         },
       ],
     },

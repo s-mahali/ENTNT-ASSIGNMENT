@@ -15,6 +15,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { setPatientUsers } from "../../redux/slicers/patientSlice";
 import AddPatientForm from "./AddPatientForm";
+import PatientTable from "./PatientTable";
 import toast from "react-hot-toast";
 
 // const patientData = [
@@ -70,6 +71,7 @@ const ManagePatient = () => {
   const [editForm, setEditForm] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
   const dispatch = useDispatch();
   const { patients } = useSelector((store) => store.patients);
 
@@ -154,18 +156,28 @@ const ManagePatient = () => {
     fetchAllPatient();
   }, [dispatch]);
 
-  const handleEdit = () => {
-    setEditForm({ ...selectedPatient });
+  const handleEdit = (patient) => {
+    setSelectedPatient(patient)
     setIsEditing(true);
   };
 
-  const handleSave = (updatePatient) => {
+  const handleView = (patient) => {
+    setSelectedPatient(patient);
+    setViewModalOpen(true);
+  }
+
+  const handleDelete = (patient) => {
+     setSelectedPatient(patient);
+     setDeleteModalOpen(true);
+  }
+
+  const handleSave = (patient) => {
     const updatePatients = patients.map((p) =>
-      p.id === updatePatient.id ? updatePatient : p
+      p.id === patient.id ? patient : p
     );
     dispatch(setPatientUsers(updatePatients));
     savePatientsToStorage(updatePatients);
-    setSelectedPatient(updatePatient);
+    setSelectedPatient(patient);
     setIsEditing(false);
   };
 
@@ -177,9 +189,7 @@ const ManagePatient = () => {
     setIsAdding(false);
   };
 
-  const handleDelete = () => {
-    setDeleteModalOpen(true);
-  };
+  
 
   const confirmDelete = () => {
     if (patients && patients.length > 0) {
@@ -204,13 +214,7 @@ const ManagePatient = () => {
     setIsEditing(false);
   };
 
-  const filteredPatients =
-    patients &&
-    patients.filter(
-      (patient) =>
-        patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        patient.contact.includes(searchTerm)
-    );
+  
 
   //framer-motion helper function
   const containerVariants = {
@@ -299,206 +303,163 @@ const ManagePatient = () => {
           </motion.button>
         </motion.div>
 
-        <div className="flex gap-8">
-          {/* Patient Grid */}
-          <div className="flex-1">
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, index) => (
-                  <div key={index} className="bg-slate-800/50 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 animate-pulse">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-12 h-12 bg-slate-700 rounded-full"></div>
-                      <div className="space-y-2">
-                        <div className="h-4 bg-slate-700 rounded w-24"></div>
-                        <div className="h-3 bg-slate-700 rounded w-16"></div>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="h-3 bg-slate-700 rounded w-32"></div>
-                      <div className="h-3 bg-slate-700 rounded w-28"></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <motion.div
-                variants={containerVariants}
-                initial="hidden"
-                animate="visible"
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                {patients && patients.length > 0 ? (
-                  filteredPatients.map((patient) => (
-                    <motion.div
-                      key={patient.id}
-                      variants={cardVariants}
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => handlePatientClick(patient)}
-                      className={`cursor-pointer bg-slate-800/50 backdrop-blur-md rounded-2xl p-6 border transition-all duration-300 ${
-                        selectedPatient?.id === patient.id
-                          ? 'border-blue-500 bg-blue-900/20'
-                          : 'border-slate-700/50 hover:border-slate-600/50'
-                      }`}
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center">
-                          <User size={24} className="text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-lg font-semibold text-slate-100">
-                            {patient.name}
-                          </h3>
-                          <p className="text-sm text-slate-400">
-                            Age {calculateAge(patient.dob)}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2 mb-4">
-                        <div className="flex items-center gap-2 text-sm text-slate-300">
-                          <Phone size={16} className="text-blue-400" />
-                          {patient.contact}
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-slate-300">
-                          <Calendar size={16} className="text-blue-400" />
-                          {formatDate(patient.dob)}
-                        </div>
-                      </div>
-
-                      <div className="pt-4 border-t border-slate-700/50">
-                        <div className="flex items-start gap-2">
-                          <Heart size={16} className="text-red-400 mt-0.5 flex-shrink-0" />
-                          <p className="text-sm text-slate-300 line-clamp-2">
-                            {patient.healthInfo}
-                          </p>
-                          
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))
-                ) : (
-                  <div className="col-span-full text-center py-16">
-                    <User size={64} className="text-slate-500 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-slate-100 mb-2">
-                      No Patients Found
-                    </h3>
-                    <p className="text-slate-400">
-                      Add your first patient to get started
-                    </p>
-                  </div>
-                )}
-              </motion.div>
-            )}
+        {/* Patient Table */}
+         {isLoading ? (
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-12 text-center">
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"
+            />
+            <p className="text-slate-300">Loading patients...</p>
           </div>
+        ) : (
+          <PatientTable
+            patients={patients || []}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onView={handleView}
+            searchTerm={searchTerm}
+            calculateAge={calculateAge}
+          />
+        )}
 
-          {/* Patient Details Sidebar */}
-          <AnimatePresence>
-            {(selectedPatient || isAdding) && (
+        {/* View Patient Modal */}
+        <AnimatePresence>
+          {viewModalOpen && selectedPatient && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+              onClick={() => setViewModalOpen(false)}
+            >
               <motion.div
-                variants={sidebarVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="w-96 bg-slate-800/50 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 sticky top-8 self-start"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-slate-800/95 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 max-w-2xl w-full max-h-[90vh] overflow-auto"
               >
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold text-slate-100">
-                    {isAdding ? "Add New Patient" : "Patient Details"}
-                  </h2>
+                  <h3 className="text-xl font-bold text-slate-100">Patient Details</h3>
                   <button
-                    onClick={() => {
-                      setSelectedPatient(null);
-                      setIsAdding(false);
-                      setIsEditing(false);
-                    }}
+                    onClick={() => setViewModalOpen(false)}
                     className="text-slate-400 hover:text-slate-100 transition-colors"
                   >
                     <X size={24} />
                   </button>
                 </div>
-
-                {isEditing || isAdding ? (
-                  <AddPatientForm
-                    isEditing={isEditing}
-                    setIsEditing={setIsEditing}
-                    isAdding={isAdding}
-                    setIsAdding={setIsAdding}
-                    selectedPatient={selectedPatient}
-                    onSave={isEditing ? handleSave : handleAddSave}
-                  />
-                ) : (
-                  <div>
-                    <div className="text-center mb-6">
-                      <div className="w-20 h-20 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <User size={32} className="text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-slate-100 mb-1">
-                        {selectedPatient.name}
-                      </h3>
-                      <p className="text-slate-400">
-                        Age {calculateAge(selectedPatient.dob)}
-                      </p>
+                
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-slate-700/30 rounded-lg p-4">
+                      <h4 className="text-sm font-medium text-slate-400 mb-1">Full Name</h4>
+                      <p className="text-slate-100">{selectedPatient.name}</p>
                     </div>
-
-                    <div className="space-y-4 mb-6">
-                      <div className="bg-slate-700/30 rounded-lg p-4">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Calendar size={20} className="text-blue-400" />
-                          <span className="text-slate-300 font-medium">Date of Birth</span>
-                        </div>
-                        <p className="text-slate-100 ml-8">
-                          {formatDate(selectedPatient.dob)}
-                        </p>
-                      </div>
-
-                      <div className="bg-slate-700/30 rounded-lg p-4">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Phone size={20} className="text-blue-400" />
-                          <span className="text-slate-300 font-medium">Contact</span>
-                        </div>
-                        <p className="text-slate-100 ml-8">
-                          {selectedPatient.contact}
-                        </p>
-                      </div>
-
-                      <div className="bg-slate-700/30 rounded-lg p-4">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Heart size={20} className="text-red-400" />
-                          <span className="text-slate-300 font-medium">Health Information</span>
-                        </div>
-                        <p className="text-slate-100 ml-8">
-                          {selectedPatient.healthInfo}
-                        </p>
-                        
-                      </div>
+                    <div className="bg-slate-700/30 rounded-lg p-4">
+                      <h4 className="text-sm font-medium text-slate-400 mb-1">Age</h4>
+                      <p className="text-slate-100">{calculateAge(selectedPatient.dob)} years</p>
                     </div>
-
-                    <div className="flex gap-3 pt-4">
-                      <motion.button
-                        onClick={handleEdit}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-200"
-                      >
-                        <Edit size={16} />
-                        Edit
-                      </motion.button>
-                      <motion.button
-                        onClick={handleDelete}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        className="flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-200"
-                      >
-                        <Trash2 size={16} />
-                      </motion.button>
+                    <div className="bg-slate-700/30 rounded-lg p-4">
+                      <h4 className="text-sm font-medium text-slate-400 mb-1">Date of Birth</h4>
+                      <p className="text-slate-100">{formatDate(selectedPatient.dob)}</p>
                     </div>
+                    <div className="bg-slate-700/30 rounded-lg p-4">
+                      <h4 className="text-sm font-medium text-slate-400 mb-1">Contact</h4>
+                      <p className="text-slate-100">{selectedPatient.contact}</p>
+                    </div>
+                    {selectedPatient.email && (
+                      <div className="bg-slate-700/30 rounded-lg p-4 md:col-span-2">
+                        <h4 className="text-sm font-medium text-slate-400 mb-1">Email</h4>
+                        <p className="text-slate-100">{selectedPatient.email}</p>
+                      </div>
+                    )}
                   </div>
-                )}
+                  <div className="bg-slate-700/30 rounded-lg p-4">
+                    <h4 className="text-sm font-medium text-slate-400 mb-2">Health Information</h4>
+                    <p className="text-slate-100">{selectedPatient.healthInfo}</p>
+                  </div>
+                </div>
               </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+         {/* Edit Patient Modal */}
+        <AnimatePresence>
+          {isEditing && selectedPatient && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+              onClick={() => setIsEditing(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-slate-800/95 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 max-w-2xl w-full max-h-[90vh] overflow-auto"
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-bold text-slate-100">Edit Patient</h3>
+                  <button
+                    onClick={() => setIsEditing(false)}
+                    className="text-slate-400 hover:text-slate-100 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+                
+                <AddPatientForm
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
+                  selectedPatient={selectedPatient}
+                  onSave={handleSave}
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Add Patient Modal */}
+        <AnimatePresence>
+          {isAdding && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+              onClick={() => setIsAdding(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-slate-800/95 backdrop-blur-md rounded-2xl p-6 border border-slate-700/50 max-w-2xl w-full max-h-[90vh] overflow-auto"
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-bold text-slate-100">Add New Patient</h3>
+                  <button
+                    onClick={() => setIsAdding(false)}
+                    className="text-slate-400 hover:text-slate-100 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+                
+                <AddPatientForm
+                  isAdding={isAdding}
+                  setIsAdding={setIsAdding}
+                  onSave={handleAddSave}
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Delete Confirmation Modal */}
         <AnimatePresence>

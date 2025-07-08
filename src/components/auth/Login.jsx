@@ -36,15 +36,16 @@ const Login = () => {
   // Hardcoded users
   const HARDCODED_USERS = [
     {
-      email: "patient@example.com",
+      email: "john@entnt.in",
       password: "patient123",
       role: "user",
-      name: "lata kumari",
+      name: "John Doe",
       id: 1,
+      patientId: "p1",
     },
 
     {
-      email: "admin@example.com",
+      email: "admin@entnt.in",
       password: "admin123",
       role: "admin",
       name: "vishal kumar",
@@ -398,7 +399,7 @@ const Login = () => {
         {/* Footer */}
         <motion.div variants={itemVariants} className="text-center">
           <Typography variant="caption" className="text-slate-500">
-            © 2025 DentalOg. All rights reserved.
+            © 2025 ENTNT. All rights reserved.
           </Typography>
         </motion.div>
       </motion.div>

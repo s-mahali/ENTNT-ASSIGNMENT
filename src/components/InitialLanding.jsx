@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {ChevronRight, Calendar, Menu, Stethoscope, X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const InitialLanding = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,17 +28,21 @@ const InitialLanding = () => {
               <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
                 <Stethoscope className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-slate-100">DentalOG</span>
+              <span className="text-xl font-bold text-slate-100">ENTNT</span>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105">
+              <Link to="/login">
+                <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105">
                 Login
               </button>
-              <button className="border border-blue-400 text-blue-400 px-6 py-2 rounded-lg hover:bg-blue-400 hover:text-white transition-all duration-200">
+              </Link>
+              <Link to='/signup'>
+               <button className="border border-blue-400 text-blue-400 px-6 py-2 rounded-lg hover:bg-blue-400 hover:text-white transition-all duration-200">
                 Sign Up
               </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -56,12 +61,16 @@ const InitialLanding = () => {
           {isMenuOpen && (
             <div className="md:hidden bg-slate-800/95 backdrop-blur-md rounded-lg mt-2 p-4 space-y-4">
               <div className="flex space-x-2 pt-2">
-                <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg text-sm">
+                <Link to="/login">
+                 <button className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg text-sm">
                   Login
                 </button>
-                <button className="border border-blue-400 text-blue-400 px-4 py-2 rounded-lg text-sm">
+                </Link>
+                <Link to="/signup">
+                  <button className="border border-blue-400 text-blue-400 px-4 py-2 rounded-lg text-sm">
                   Sign Up
                 </button>
+                </Link>
               </div>
             </div>
           )}
@@ -71,7 +80,7 @@ const InitialLanding = () => {
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto ">
-          <div className="grid lg:flex lg:text-center gap-12 items-center">
+          <div className="grid lg:flex lg:justify-center lg:items-center lg:text-center gap-12">
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-6xl font-bold leading-tight">

@@ -13,7 +13,7 @@ const Stats = () => {
     totalPatients: 0,
     completedAppointments: 0,
     pendingAppointments: 0,
-    averageCost: 283,
+    averageCost: 50,
     monthlyGrowth: 12.6,
   });
 
@@ -25,7 +25,7 @@ const Stats = () => {
     setStatsData((prevStats) => ({
       ...prevStats,
       totalRevenue: existingAppointments.reduce(
-        (total, app) => total + app.cost,
+        (total, app) => total + Number(app.cost|| 0),
         0
       ),
       totalPatients: patients.length,
@@ -40,7 +40,7 @@ const Stats = () => {
   return (
     <div className="w-full p-4 md:p-6">
       <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-100 mb-4">
-        Dashboard Overview
+        Dashboard Stats
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -52,7 +52,7 @@ const Stats = () => {
                 Total Revenue
               </p>
               <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
-                ${statsData.totalRevenue.toLocaleString()}
+                ${parseInt(statsData.totalRevenue)}
               </h3>
             </div>
             <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">

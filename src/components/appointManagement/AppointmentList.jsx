@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, User, FileText, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
 const AppointmentList = () => {
   const [appointments, setAppointments] = useState([]);
   const [filter, setFilter] = useState('all'); // all, scheduled, completed, cancelled
-
+  const {patients} = useSelector((store) => store.patients);
   useEffect(() => {
     loadAppointments();
   }, []);
+
+  
+
+  
 
   const loadAppointments = () => {
     const savedAppointments = JSON.parse(localStorage.getItem("appointments") || "[]");
@@ -19,6 +24,14 @@ const AppointmentList = () => {
     if (filter === 'all') return true;
     return apt.status === filter;
   });
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -120,7 +133,9 @@ const AppointmentList = () => {
                   <div className="flex items-center gap-2 text-slate-300">
                     <Calendar className="w-4 h-4" />
                     <span className="text-sm">
-                      {new Date(appointment.appointmentDate).toLocaleDateString()}
+                      {
+                       formatDate(appointment.appointmentDate)
+                      }
                     </span>
                   </div>
 
@@ -141,30 +156,22 @@ const AppointmentList = () => {
                   )}
 
                   {/* Post-appointment details */}
-                  {appointment.status === 'completed' && appointment.treatmentProvided && (
+                  {appointment.status === 'completed' && appointment.treatment && (
                     <div className="mt-4 pt-4 border-t border-slate-700/50">
                       <h4 className="text-sm font-medium text-slate-200 mb-2">Treatment Details:</h4>
                       <p className="text-sm text-slate-300 line-clamp-2">
-                        {appointment.treatmentProvided}
+                        {appointment.treatment}
                       </p>
-                      {appointment.followUpRequired && (
+                      {appointment.nextDate && (
                         <div className="mt-2 flex items-center gap-1 text-xs text-blue-400">
                           <Clock className="w-3 h-3" />
-                          Follow-up: {new Date(appointment.followUpDate).toLocaleDateString()}
+                          Follow-up: {formatDate(appointment.nextDate)}
                         </div>
                       )}
                     </div>
                   )}
 
-                  {/* Timestamps */}
-                  <div className="pt-2 border-t border-slate-700/50">
-                    <div className="flex justify-between text-xs text-slate-400">
-                      <span>Created: {new Date(appointment.createdAt).toLocaleDateString()}</span>
-                      {appointment.updatedAt !== appointment.createdAt && (
-                        <span>Updated: {new Date(appointment.updatedAt).toLocaleDateString()}</span>
-                      )}
-                    </div>
-                  </div>
+                  
                 </div>
               </motion.div>
             ))}

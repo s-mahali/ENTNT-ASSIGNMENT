@@ -7,19 +7,20 @@ import PreAppointment from './PreAppointment'
 
 const AppointManagement = () => {
   const [activeTab, setActiveTab] = useState('schedule'); // schedule, complete, list
-
+const handleScheduled = () => setActiveTab('complete');
+const handleCompletion = () => setActiveTab('list');
   const tabs = [
     {
       id: 'schedule',
       label: 'Schedule Appointment',
       icon: <Plus className="w-4 h-4" />,
-      component: <PreAppointment/>
+      component: <PreAppointment onScheduled={handleScheduled}/>
     },
     {
       id: 'complete',
       label: 'Complete Appointment',
       icon: <CheckCircle className="w-4 h-4" />,
-      component: <PostAppointment />
+      component: <PostAppointment onCompletion ={handleCompletion}/>
     },
     {
       id: 'list',

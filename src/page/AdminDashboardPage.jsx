@@ -2,7 +2,6 @@ import { useState } from "react";
 import TopPatients from "../components/dashboard/TopPatients";
 import NextAppointment from "../components/dashboard/NextAppointment";
 import Stats from "../components/dashboard/Stats";
-import RevenueChart from "../components/dashboard/RevenueChart";
 import Calender from "../components/dashboard/Calender";
 
 const AdminDashboardPage = () => {
@@ -31,11 +30,7 @@ const AdminDashboardPage = () => {
           </div>
 
           {/* Right Section */}
-          <div className="space-y-6 ">
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg">
-              <RevenueChart />
-            </div>
-          </div>
+
           <div className="space-y-6">
             <Calender />
           </div>

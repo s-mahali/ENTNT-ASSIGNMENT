@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 
-const PreAppointment = () => {
+const PreAppointment = ({onScheduled}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const { patients } = useSelector((store) => store.patients);
@@ -129,6 +129,7 @@ const PreAppointment = () => {
 
       console.log("appointmentData", newAppointment);
       toast.success("Appointment scheduled successfully");
+      onScheduled && onScheduled();
     } catch (error) {
       console.error("error while saving appointment", error.message);
       toast.error("error while saving appointment");

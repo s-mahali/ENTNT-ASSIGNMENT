@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-const PostAppointment = () => {
+const PostAppointment = ({onCompletion}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const imgRef = useRef(null);
@@ -118,6 +118,8 @@ const PostAppointment = () => {
       setSelectedIncident(null);
       console.log("updatedAppointments", allAppointments);
       toast.success("Appointment completed successfully");
+      onCompletion && onCompletion();
+      
     } catch (error) {
       console.error("error while saving appointment details", error.message);
       toast.error("error while saving appointment details");
@@ -185,7 +187,7 @@ const PostAppointment = () => {
     const existingIncident = JSON.parse(
       localStorage.getItem("appointments" || [])
     );
-    const scheduledIncident = existingIncident.filter(
+    const scheduledIncident = existingIncident && existingIncident.filter(
       (incident) => incident.status === "scheduled"
     );
     setScheduledIncident(scheduledIncident);
