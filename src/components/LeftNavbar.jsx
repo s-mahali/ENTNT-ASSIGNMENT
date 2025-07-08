@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { setAuthUser } from "../redux/slicers/authSlice";
-import { setPatientUsers } from "../redux/slicers/patientSlice";
 import { useDispatch } from "react-redux";
 import {
   LayoutDashboard,
@@ -71,7 +70,6 @@ const LeftNavbar = () => {
     try {
       localStorage.removeItem("user-cred");
       dispatch(setAuthUser(null));
-      dispatch(setPatientUsers([]));
       navigate("/login");
       toast.success("Logout successful");
     } catch (error) {

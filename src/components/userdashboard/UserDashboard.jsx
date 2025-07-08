@@ -28,9 +28,10 @@ const UserDashboard = () => {
   const { patients } = useSelector((store) => store.patients);
 
   
+
   useEffect(() => {
     if (user?.pateintId && patients?.length > 0) {
-      const patient = patients.find((p) => p.id === user.pateintId);
+      const patient = patients.find((p) => p.id === user?.pateintId);
       setPatietData(patient);
 
       const allAppointments = JSON.parse(

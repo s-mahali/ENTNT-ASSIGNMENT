@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import InitialLanding from "./components/InitialLanding";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider} from "react-router-dom";
 import SignupPage from "./page/SignupPage";
 import LoginPage from "./page/LoginPage";
 import ManagePatientPage from "./page/ManagePatientPage";
@@ -11,7 +11,7 @@ import UserDashboardPage from "./page/UserDashboardPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
-  const user = JSON.parse(localStorage.getItem("user-cred" || []));
+ 
   const browserRouter = createBrowserRouter([
     {
       path: "/",

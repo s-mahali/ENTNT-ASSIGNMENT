@@ -35,9 +35,9 @@ const StyledBadge = styled(Badge)(({  }) => ({
 
 // Custom styled day component
 const CustomPickersDay = styled(PickersDay)(({hasappointments }) => ({
-  backgroundColor: hasappointments === 'true' ? '#3b82f6' : 'transparent',
-  border: hasappointments === 'true' ? '1px solid rgba(59, 130, 246, 0.3)' : 'none',
-  color: '#e2e8f0',
+  backgroundColor: hasappointments === 'true' ? '#2563eb' : 'transparent',
+  color: hasappointments === 'true' ? '#fff' : '#e2e8f0',
+  border: hasappointments === 'true' ? '1 px solid #3b82f6' : 'none',
   '&:hover': {
     backgroundColor: hasappointments === 'true' ? 'rgba(59, 130, 246, 0.2)' : 'rgba(71, 85, 105, 0.3)',
   },

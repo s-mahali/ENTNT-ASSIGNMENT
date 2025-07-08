@@ -3,25 +3,29 @@ import UserDashboard from "../components/userdashboard/UserDashboard";
 import AddPatientForm from "../components/patientManagement/AddPatientForm";
 import { useSelector } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const UserDashboardPage = () => {
   const { user } = useSelector((store) => store.auth);
   const [isPatient, setIsPatient] = useState(false);
   const [isPatientForm, setIsPatientForm] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
+  
+  
   useEffect(() => {
-    if (user.pateintId) {
+    if (user?.pateintId) {
       setIsPatient(true);
       setIsPatientForm(false);
     }
-    if (user.role === "admin") {
+    if (user?.role === "admin") {
       setIsAdmin(true);
     }
-  }, [user.pateintId, user.role]);
+  }, [user?.pateintId, ]);
+
+ 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white flex items-center justify-center p-4">
+     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white flex items-center justify-center p-4">
       <div className="w-full max-w-3xl mx-auto">
         {isPatient ? (
           <motion.div
